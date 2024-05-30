@@ -1,3 +1,31 @@
+/*
+SELECT WHERE 절
+    WHERE 은, 조건을 걸어 선택한 조건에 해당하는 행만 볼 수 있도록 설정할 수 있다.
+    WHERE 원하는칼럼 = 원하는 칼럼에서 해당하는 조건;
+    
+    만약, NULL 값(아무것도 없는 값) 을 가진 정보만 조회하고 싶다면
+    WHERE 원하는칼럼 IS NULL;
+    
+    만약, NULL 이 아닌 값을 가진 정보만 조회하고 싶다면
+    WHERE 원하는칼럼 IS NOT NULL;
+    
+    ~ 이상이거나 ~ 이하일 때는 >= <=  > < 를 사용한다.(미만, 초과 포함)
+    WHERE 원하는칼럼 >= 원하는값;
+    
+    OO 와 OO 사이만 조회하고 싶다면
+    BETWEEN OO AND OO;
+    
+        예제
+        WHERE 원하는칼럼 BETWEEN 사당 AND 의정부;
+        
+-- 여기서부터는 WHERE 절을 사용하지 않는다.--
+    
+    ORDER BY
+        오름차순: ASC
+        내림차순: DESC
+    
+*/
+
 -- 모든 직원 정보 조회
 SELECT * FROM employee;
 
@@ -46,3 +74,37 @@ select dept_code, emp_name, email, phone from employee where dept_code is null;
 
 -- dept_code 가 null 인 사람의 모든 정보 조회
 select * from employee where dept_code is null;
+
+-- 보너스가 0.2 이상인 사원의 이름과 보너스 조회
+select emp_name, bonus from employee where bonus >= 0.2;
+
+-- 급여가 3백만원 ~ 4백만원 사이인 사원의 이름과 급여 조회
+select emp_name, salary from employee where salary between 3000000 and 4000000;
+
+-- 급여가 높은 순서대로 사원의 이름과 급여 조회
+-- 숫자 체계에서의 오름차순은 1부터 시작한다.
+-- 숫자 체계에서의 내림차순은 9부터 시작한다.
+select emp_name, salary from employee order by salary desc;
+
+-- 글자 체계에서의 오름차순은 ㄱ부터 시작한다.(ㄱ▶ㅎ A▶Z)
+-- 글자 체계에서의 내림차순은 ㅎ부터 시작한다.(ㅎ▶ㄱ Z▶A)
+select emp_name from employee order by emp_name asc;
+
+select emp_id, emp_name, salary, dept_code from employee where salary > 3000000;
+
+-- 연봉이 5천만원 이하인 사원
+select emp_id, emp_name, salary * 12 as "연봉" from employee where salary * 12 <= 50000000;
+
+-- 부서 코드가 D9 이 아닌 사원
+select emp_name, dept_code, phone from employee where dept_code != 'D9';
+
+-- 부서 코드가 D6 면서, 급여가 3백만원을 초과하는 사원
+select emp_name, dept_code, salary from employee where dept_code = 'D6' and salary > 3000000;
+
+select emp_name, salary, dept_code, job_code from employee where dept_code = 'D6' and job_code = 'J3';
+
+
+-- 날짜 범위 비교해보기
+select emp_name, hire_date as "입사일" from employee where hire_date between to_date ('2000-01-01', 'yyyy-mm-dd') and to_date('2000-12-31', 'yyyy-mm-dd');
+
+select emp_name, hire_date as "입사일" from employee where hire_date > to_date ('2000', 'yyyy');
