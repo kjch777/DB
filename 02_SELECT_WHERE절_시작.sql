@@ -108,3 +108,52 @@ select emp_name, salary, dept_code, job_code from employee where dept_code = 'D6
 select emp_name, hire_date as "입사일" from employee where hire_date between to_date ('2000-01-01', 'yyyy-mm-dd') and to_date('2000-12-31', 'yyyy-mm-dd');
 
 select emp_name, hire_date as "입사일" from employee where hire_date > to_date ('2000', 'yyyy');
+
+-- 특정 전화번호 패턴을 가진 사원의 이름과 전화번호 조회해보기
+select emp_name, phone from employee where phone like '010%';
+
+-- 이메일 아이디의 글자 수가, @ 앞이 5글자인 사원의 이름, 이메일 조회해보기
+select emp_name, email from employee where email like '_____@%';
+
+-- 이메일 아이디의 글자 수가, _ 앞이 3글자인 사원의 사번, 이름, 이메일 조회해보기
+select emp_id, emp_name, email from employee where email like '___%';
+-- ▲ 원하는 결과가 나오지 않는다. 따라서 ▼
+
+
+-- ESCAPE 옵션: LIKE 의 의미를 벗어나 단순 문자열로 인식하는 것
+--  ▶ 적용 범위: 특수문자 뒤 한글자
+select emp_id, emp_name, email from employee where email like '___#_%' escape '#';
+/*
+___ 3개 의미
+
+ESCAPE: '#' 으로 구분지을 것이다. 이 때, # 은 다른 특수문자나 영어, 숫자로 대체할 수 있다.
+___LIKE: 사용하는 3글자만 찾으라는 의미로 구분짓는것
+_%: _ 로 된 글자 찾기
+
+___#_% ___@%
+_ 를 @ 처럼 사용하길 원했기 때문에 중간에 # 을 넣어준 것이다.
+
+___#_% __돈%
+_ 를 돈 처럼 사용하길 원했기 때문에 중간에 # 을 넣어준 것이다.
+*/
+
+-- EMPLOYEE TABLE
+select emp_name as "이름", salary as "급여" from employee;
+select dept_code as "부서코드", job_code as "직무코드" from employee;
+select email as "이메일", phone as "전화번호" from employee;
+select emp_id as "사원번호", hire_date as "입사일" from employee;
+select emp_name as "이름", dept_code as "부서", salary as "급여" from employee;
+select distinct dept_code from employee;
+select distinct job_code from employee;
+select distinct sal_level from employee;
+select distinct manager_id from employee;
+select distinct emp_name from employee;
+
+-- OR 연산자
+select emp_name, salary from employee where salary > 2000000 or dept_code = 'D5';
+
+select emp_name, salary from employee where dept_code = 'D6' or job_code = 'J3';
+
+select emp_name, sal_level, bonus from employee where sal_level = 'S5' or bonus = 0.2;
+
+select emp_name, hire_date from employee where ent_yn = 'N' or hire_date > to_date('2000', 'yyyy');
