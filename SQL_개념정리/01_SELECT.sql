@@ -139,3 +139,164 @@ SELECT * FROM EMPLOYEE WHERE DEPT_CODE IS NULL;
 
 -- EMPLOYEE TABLE 에서, DEPT_CODE 가 있는 사원의 모든 정보 조회하기
 SELECT * FROM EMPLOYEE WHERE DEPT_CODE IS NOT NULL;
+
+/*
+칼럼명 BETWEEN (A) AND (B)
+--  칼럼의 값이 A 이상 B 이하면 TRUE
+
+칼럼명 NOT BETWEEN (A) AND (B)
+--  칼럼의 값이 A 이상 B 이하면 FALSE
+--  칼럼의 값이 A 미만이거나 B 를 초과한다면 TRUE (||와 비슷하다.)
+*/
+
+-- 월급이 300만원 이상 500만원 이하라면
+SELECT EMP_NAME, SALARY FROM EMPLOYEE WHERE SALARY BETWEEN 3000000 AND 5000000;
+
+-- 월급이 300만원 미만이거나 500만원을 초과한다면
+SELECT EMP_NAME, SALARY FROM EMPLOYEE WHERE SALARY NOT BETWEEN 3000000 AND 5000000;
+
+/*
+WHERE OR 절을 사용하여 값1, 값2, 값3, ... 과 같은 표시를 진행하기도 한다.
+
+칼럼명 IN (값1, 값2, 값3, ...)
+-- 칼럼의 값이 괄호 ( ) 안의 값과 일치하면 TRUE
+
+칼럼명 NOT IN (값1, 값2, 값3, ...)
+-- 칼럼의 값이 괄호 ( ) 안의 값과 일치하지 않으면 TRUE
+*/
+
+-- EMPLOYEE TABLE 에서, 부서 코드가 'D5', 'D6', 'D9' 인 사원의 이름, 부서 코드, 급여 조회해보기
+-- (OR 사용)
+SELECT EMP_NAME, DEPT_CODE, SALARY FROM EMPLOYEE WHERE DEPT_CODE = 'D5' OR DEPT_CODE = 'D6' OR DEPT_CODE = 'D9';
+
+-- EMPLOYEE TABLE 에서, 부서 코드가 'D5', 'D6', 'D9' 인 사원의 이름, 부서 코드, 급여 조회해보기
+-- (IN 사용)
+SELECT EMP_NAME, DEPT_CODE, SALARY FROM EMPLOYEE WHERE DEPT_CODE IN ('D5', 'D6', 'D9');
+
+-- EMPLOYEE TABLE 에서, 부서 코드가 'D5', 'D6', 'D9' 가 아닌 사원의 이름, 부서 코드, 급여 조회해보기
+-- (NOT IN 사용)
+SELECT EMP_NAME, DEPT_CODE, SALARY FROM EMPLOYEE WHERE DEPT_CODE NOT IN ('D5', 'D6', 'D9');
+
+/*
+LIKE: 비교하려는 값이 특정한 패턴을 만족시키면 조회할 수 있게 해주는 연산자이다.
+    WHERE 칼럼명 LIKE '패턴'
+    
+    %(포함)
+          %A : 앞은 어떤 문자건 포함하고, 마지막은 A 로 끝나는 문자열
+            예를 들어 %륨 이라면, 검색창에 륨으로 끝나는 단어를 검색한 것과 비슷하다.
+            
+         %A% : 시작과 끝 문자는 관계없이, 중간에 A 가 들어있는 문자열
+            예를 들어 %로% 라면, 검색창에다 중간에 로가 들어가는 단어를 검색한 것과 비슷하다.
+            
+          A% : A 로 시작하고, 어떤 문자로 끝나건 상관없는 문자열
+            예를 들어 림% 라면, 검색창에 림으로 시작하는 단어를 검색한 것과 비슷하다.
+            
+- 글자 수
+    A_% : A 뒤에 아무거나 한글자만 있는 문자열
+        예 : AB, A1, AQ, A가
+             가_% : 가로 시작하는 두글자 단어만 검색
+            나__% : 나로 시작하는 세글자 단어만 검색
+            
+    _A% : A 앞에 아무거나 한글자만 있는 문자열
+        예 : BA, 1A, QA, 가A
+             _가% : 가로 끝나는 두글자 단어만 검색
+            __나% : 나로 끝나는 세글자 단어만 검색
+*/
+
+-- EMPLOYEE TABLE 에서, 성이 전씨인 사원의 사번, 이름 조회하기
+SELECT EMP_ID, EMP_NAME FROM EMPLOYEE WHERE EMP_NAME LIKE '전%';
+
+-- EMPLOYEE TABLE 에서, 이름이 수로 끝나는 사원의 사번, 이름 조회하기
+SELECT EMP_ID, EMP_NAME FROM EMPLOYEE WHERE EMP_NAME LIKE '%수';
+
+-- EMPLOYEE TABLE 에서, 이름에 하가 포함되는 사원의 사번, 이름 조회하기
+SELECT EMP_ID, EMP_NAME FROM EMPLOYEE WHERE EMP_NAME LIKE '%하%';
+
+-- EMPLOYEE TABLE 에서, 성이 전씨이고, 이름이 돈으로 끝나는 사원의 사번, 이름 조회하기
+SELECT EMP_ID, EMP_NAME FROM EMPLOYEE WHERE EMP_NAME LIKE '전%돈';
+
+
+-- ESCAPE 옵션: LIKE 의 의미를 벗어나 단순 문자열로 인식하는 것
+--  ▶ 적용 범위: 특수문자 뒤 한글자
+select emp_id, emp_name, email from employee where email like '___#_%' escape '#';
+/*
+___ 3개 의미
+
+ESCAPE: '#' 으로 구분지을 것이다. 이 때, # 은 다른 특수문자나 영어, 숫자로 대체할 수 있다.
+___LIKE: 사용하는 3글자만 찾으라는 의미로 구분짓는것
+_%: _ 로 된 글자 찾기
+
+___#_% ___@%
+_ 를 @ 처럼 사용하길 원했기 때문에 중간에 # 을 넣어준 것이다.
+
+___#_% __돈%
+_ 를 돈 처럼 사용하길 원했기 때문에 중간에 # 을 넣어준 것이다.
+
+LIKE '___#@%' ESCAPE '#' ◀ # 으로 구분 짓고, @
+*/
+
+/*
+DUAL(DUmmy tAbLe)
+          Dummy: 실제로 사용되지 않은 데이터
+    DUMMY TABLE: 실제로 존재하지 않는 테이블
+        ▶ 테이블 만들기는 번거롭지만 테스트나 사용은 해봐야겠을 때,
+        ▶ 단순히 데이터를 조회만 하거나, 확인만 할 때 사용한다.
+*/
+
+-- 존재하지 않는 테이블을 이용하여 현재시간 확인하기
+SELECT SYSDATE, SYSTIMESTAMP FROM DUAL;
+
+/*
+WHERE 절에서 별칭을 사용하는 것이 불가능할 때
+*/
+
+-- 부서 코드 D6 확인
+SELECT EMP_NAME, DEPT_CODE AS "부서코드" FROM EMPLOYEE WHERE 부서코드 = 'D6';
+
+ORA-00904: "부서코드": invalid identifier
+00904. 00000 -  "%s: invalid identifier"
+*Cause:    
+*Action:
+6행, 66열에서 오류 발생
+
+-- 부서코드 라는 칼럼명이 존재하지 않는다.
+-- 별칭은 사용자가 식별하기 쉽게 작성하는 것일뿐,
+-- WHERE 절에서 조회를 할 때 사용할 순 없다.
+
+/*
+그러나, ORDER BY 절에서는 별칭을 사용한 조회가 가능하다.
+*/
+SELECT EMP_NAME, SALARY * 12 AS "연봉" FROM EMPLOYEE ORDER BY 연봉 DESC;
+-- ORDER BY 는, 칼럼에서 무언가를 찾아오는 것이 아니라, 
+-- 이미 나타난 정보를 어떻게 정렬할지 (오름차순 또는 내림차순) 선택만 하는 것이기 때문에
+-- 별칭을 사용해서 조회할 수도 있는 것이다.
+
+-- EMPLOYEE TABLE 에서, 이름, 부서코드, 급여를 각각 부서코드는 오름차순으로, 급여는 내림차순으로 조회하기
+-- 정렬은 ASC 가 기본이다.
+SELECT EMP_NAME AS "이름", DEPT_CODE AS "부서코드", SALARY AS "급여" FROM EMPLOYEE ORDER BY DEPT_CODE, 급여 DESC;
+-- 부서코드 먼저 오름차순 정렬되고, 그 안에서 급여가 내림차순으로 정렬된 것이다.
+
+-- EMPLOYEE TABLE 에서, 이름, 부서코드, 직급코드를 각각 부서코드는 오름차순, 직급코드는 내림차순, 이름은 오름차순으로 , 를 사용하여 조회하기
+SELECT EMP_NAME AS "이름", DEPT_CODE AS "부서코드", JOB_CODE AS "직급코드" FROM EMPLOYEE ORDER BY 부서코드 ASC, 직급코드 DESC, 이름 ASC;
+-- 부서코드 먼저 오름차순 정렬되고, 그 안에서 직급코드 내림차순, 또 그 안에서 이름이 오름차순으로 정렬된 것이다.
+
+/*
+|| 연결 연산자
+    문자열을 이어쓸 때, + 나 , 로 연결하지 않고 || 를 사용하여 연결한다.
+*/
+SELECT EMP_NAME || '의 월급은 ' || SALARY || '원 입니다.' FROM EMPLOYEE;
+
+-- 직급코드가 J5 인 사원의 명수 조회하기
+-- J5 몇 명?
+select count(*) as "J5 COUNT" from employee where job_code = 'J5';
+
+-- 사원의 이름과 이메일을 결합하여 조회하기
+select emp_name || '(' || email || ')' from employee;
+
+select emp_name || ' - ' || phone from employee;
+
+select emp_id || ' - ' || job_code from employee;
+
+select emp_name || ' : ' || salary as "이름 : 급여" from employee;
+
+select emp_name || ' - ' || salary * 12 as "이름 - 연봉" from employee;
