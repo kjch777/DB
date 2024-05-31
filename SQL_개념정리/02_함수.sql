@@ -163,6 +163,6 @@ REPLACE: 특정 문자열을 다른 문자열로 치환할 때 사용한다.
     (문자열 | 칼럼명, 찾을 문자열, 바꿀 문자열)
 */
 
--- NATIONAL TABLE 에서, 한국을 대한민국으로 바꾸기
+-- NATIONAL TABLE 에서, 한국을 대한민국으로 치환하여 조회하기
 SELECT * FROM NATIONAL;
 SELECT NATIONAL_CODE, NATIONAL_NAME, REPLACE(NATIONAL_NAME, '한국', '대한민국') FROM NATIONAL;

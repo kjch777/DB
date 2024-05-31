@@ -47,3 +47,24 @@ PRIMARY KEY(기본 키)
     한 TABLE 당 한개만 설정해야 한다.
     칼럼 레벨이나 TABLE 레벨도 설정 가능하다.
 */
+
+/*
+테스트를 진행하거나, 칼럼에 대한 설정을 변경한 후 특정한 내용을 확인하고 싶다면,
+TABLE 을 복제하여 진행하는 것이 좋다.(사본 만들기)
+
+사본 만드는 법
+
+    모든 값이 동일한 사본 만들기
+    CREATE TABLE 새로만들테이블이름 AS SELECT * FROM 복사해올 테이블 이름;
+
+    특정 칼럼 값만 동일한 사본 만들기
+    CREATE TABLE 새로만들테이블이름 AS SELECT 선택할칼럼명1, 선택할칼럼명2, ... FROM 복사해올 테이블 이름;
+*/
+
+CREATE TABLE EMPLOYEE2 AS SELECT * FROM EMPLOYEE;
+-- TABLE 을 만들 때, 다른 TABLE 과 동일(칼럼, 데이터) 한 TABLE 을 만드려면
+-- CREATE 테이블명 AS SELECT 복사할 값 FROM 복사할 테이블명;
+
+-- 사본이 제대로 만들어졌는지 확인하기
+--  SELECT * FROM 새로만든사본테이블명;
+SELECT * FROM EMPLOYEE2;
