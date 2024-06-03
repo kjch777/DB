@@ -300,3 +300,69 @@ select emp_id || ' - ' || job_code from employee;
 select emp_name || ' : ' || salary as "이름 : 급여" from employee;
 
 select emp_name || ' - ' || salary * 12 as "이름 - 연봉" from employee;
+
+/*****
+ORDER BY 절
+    SELECT 절의 조회 결과(RESULT SET) 를 정렬할 때 사용하는 구문이다.
+    ***** SELECT 구문에서, 가장 마지막에 해석된다. *****
+    
+    작성 방법
+        SELECT 칼럼명1, 칼럼명2 AS "별칭", 칼럼명3, ... FROM 테이블명 WHERE 조건식 ORDER BY 칼럼명 | 별칭 | 칼럼순서(오름/내림 차순)
+            칼럼 순서의 기본 값은 오름차순이다.
+            오름차순: ASC(ASCending)
+            내림차순: DESC(DESCending)
+*****/
+
+select emp_name, salary from employee order by salary desc;
+
+select emp_name, salary from employee order by salary asc;
+
+select emp_name, dept_code from employee where dept_code in ('D5', 'D6', 'D9') order by dept_code;
+
+
+select emp_id, emp_name, salary from employee where salary between 3000000 and 6000000 order by emp_name desc;
+-- select emp_id 는 첫번째 자리, emp_name 은 두번째 자리
+select emp_id, emp_name, salary from employee where salary between 3000000 and 6000000 order by 2 desc; -- 2 == emp_name
+-- 만약, emp_id 를 기준으로 정렬하고 싶다면 order by 1
+-- 만약, salary 를 기준으로 정렬하고 싶다면 order by 3
+
+select emp_name, salary * 12 from employee order by salary * 12 desc;
+
+-- order by 로 정렬을 진행할 경우, select 절에 작성된 칼럼을 그대로 따라 작성한 경우가 많다.
+
+-- order by 절에서 별칭 사용하기
+--  ▶ select 절이 먼저 해석된 다음, order by 절이 해석되기 때문에
+--    select 절에서 먼저 해석된 별칭을 order by 절에서도 사용할 수 있다.
+select emp_name, salary * 12 as "연봉" from employee order by 연봉 desc;
+-- 주의 사항
+--  order by 절에서는 별칭 사용이 가능하지만,
+--  where 절의 경우 조건식이 필요하기 때문에 별칭 사용이 불가능하다.
+--  order by 절은 이미 나온 결과를 가지고 정리만 하는 것(표현방식) 이지만,
+--  where 절은 결과를 나타내기 위해 결과를 도출하는 과정인 조건문이기 때문이다.
+--  결과가 나오지도 않았는데 별칭부터 붙인 것이기 때문에, where 절에서는 별칭 사용이 불가능하다.
+
+/*
+정렬 중첩
+-- 먼저 작성된 정렬 기준으로 정렬하고,
+-- 그 다음 작성된 정렬 기준으로 정렬을 한 것이다.
+-- 각각 다른 정렬이 2번 실행 된 것이다.
+*/
+
+select emp_name as "이름", dept_code as "부서코드", salary as "급여" from employee order by 부서코드, 급여 desc;
+
+select emp_name as "이름", dept_code as "부서코드", job_code as "직급코드" from employee order by 부서코드, 직급코드 desc, 이름;
+/*
+1번 정렬: 부서코드
+        제일 먼저 부서코드를 기준으로 오름차순 정렬된다.
+        (D1, D2, ..., NULL 순서로 정렬)
+        
+2번 정렬: 직급코드
+        동일한 부서코드 내에서, 직급코드를 기준으로 내림차순 정렬된다.
+        (J7, J6, ... 순서로 정렬)
+        
+3번 정렬: 이름
+        동일한 부서코드, 직급코드 내에서 이름을 기준으로 오름차순 정렬된다.
+        (D1 부서의 J7 직급, D1 부서의 J6 직급의 ㅈ, D1 부서의 J6 직급의 ㅊ, ... 순서로 정렬)
+*/
+-- ▼ ORDER BY 순서 그대로 출력하기
+select dept_code as "부서코드", job_code as "직급코드", emp_name as "이름" from employee order by 부서코드, 직급코드 desc, 이름;

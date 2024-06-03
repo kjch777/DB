@@ -47,9 +47,50 @@ ROLLBACK; -- 돌아가기(저장 취소)
 -----------------------------------------------------
 -- 2. UPDATE
 --  TABLE 에 기록된 칼럼의 값을 수정하는 구문
+--  UPDATE 사용 예제: 회원정보 수정(전화번호, 주소, 아이디, 비밀번호 등), 사업자-상품 수정(수량, 이름, 재고 등)
 
 
 -- 2) UPDATE 테이블명 SET 칼럼명 = 변경할값
 --    WHERE 칼럼명 비교연산자 비교값; ◀ 필수 아님
 SELECT * FROM DEPARTMENT2 WHERE DEPT_ID = 'D9';
 
+-- 수정
+UPDATE DEPARTMENT2 SET DEPT_TITLE = '전략기획팀' WHERE DEPT_ID = 'D9';
+
+-- 수정 결과 확인
+SELECT * FROM DEPARTMENT2 WHERE DEPT_ID = 'D9';
+
+-- 저장을 원한다면 COMMIT; 작성
+-- 저장 전으로 되돌리기를 원한다면 ROLLBACK; 작성
+ROLLBACK;
+
+-- 따로 조건을 설정하지 않고, 모든 행의 칼럼 값 변경하기
+--  UPDATE 테이블명 SET 칼럼명 = 변경할값;
+
+-- 여러 칼럼을 한 번에 수정할 때는 , 로 칼럼을 구분지어 수정하면 된다.
+
+UPDATE DEPARTMENT2 SET DEPT_ID = 'D0', DEPT_TITLE = '회계관리팀' WHERE DEPT_ID = 'D2';
+SELECT * FROM DEPARTMENT2;
+ROLLBACK;
+
+/*
+삭제하기
+    테이블 안에 존재하는 칼럼 값들을 삭제하는 구문
+    
+        작성법
+            DELETE FROM 테이블명 WHERE 조건설정;
+            만약, WHERE 조건설정 을 작성하지 않으면, 모든 행이 전부 다 삭제된다.
+    
+            DELETE FROM 테이블명;
+            테이블 안에 있는 모든 행 전부 삭제
+    
+            DELETE FROM 테이블명 WHERE 칼럼명 = 삭제할 칼럼값;
+            테이블 안에서, 특정 칼럼값에 해당하는 행을 모두 삭제
+
+-- 삭제 후 저장(완전 삭제) ▶ COMMIT;
+-- 되돌리기(삭제 취소) ▶ ROLLBACK;
+
+주의 사항
+    DELETE 는 테이블 안에 있는 내용을 삭제하는 것이고,
+    DROP 은 테이블 자체를 삭제하는 것이다.
+*/
