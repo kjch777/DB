@@ -166,3 +166,13 @@ REPLACE: 특정 문자열을 다른 문자열로 치환할 때 사용한다.
 -- NATIONAL TABLE 에서, 한국을 대한민국으로 치환하여 조회하기
 SELECT * FROM NATIONAL;
 SELECT NATIONAL_CODE, NATIONAL_NAME, REPLACE(NATIONAL_NAME, '한국', '대한민국') FROM NATIONAL;
+
+-- TO_NUMBER
+/*
+ORACLE SQL 존재
+문자열을 숫자 데이터 형식으로 변환할 때 사용한다.
+나중에 JAVA int 값이 아니라 String 값으로 값이 넘어오고
+추후, 변환이 필요할 때는 TO_NUMBER 를 사용할 일이 있을 수 있다.
+*/
+-- DUAL 가상 TABLE 을 이용하여, 단순하게 문자열을 숫자 데이터 형식으로만 변환하는 코드
+SELECT TO_NUMBER('12345') FROM DUAL;
