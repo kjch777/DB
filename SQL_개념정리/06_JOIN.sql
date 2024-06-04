@@ -122,3 +122,74 @@ JOIN 에 별칭을 설정하여 TABLE 표현하기
        FROM TABLE명 A, TABLE명 B
        WHERE A.칼럼명 = B.칼럼명
 *****/
+
+-- ***** OUTER JOIN 외부 조인 ***** --
+/*
+두 TABLE 에서 지정한 칼럼 값이 서로 일치하지 않는 행도 JOIN 에 포함시킨다.
+
+OUTER JOIN 과 비교해볼 INNER JOIN 쿼리문 작성해보기
+*/
+SELECT EMP_NAME, DEPT_TITLE
+FROM EMPLOYEE
+/*INNER*/JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID);
+
+-- 1) LEFT OUTER JOIN
+---> 합치기에 사용한 두 테이블 중, 왼쪽 편에 작성된 테이블의 칼럼 수를 기준으로 JOIN 한다.
+
+-- ANSI 표준
+SELECT EMP_NAME, DEPT_TITLE
+FROM EMPLOYEE 
+LEFT JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID);
+----> JOIN 구문을 기준으로, 왼쪽 편에 작성된 테이블의 모든 행이
+-----> 최종 결과(RESULT SET) 에 포함되도록 하는 JOIN 이다.
+
+-- ORACLE 표준
+SELECT EMP_NAME, DEPT_TITLE
+FROM EMPLOYEE, DEPARTMENT 
+WHERE DEPT_CODE = DEPT_ID(+);
+----> DEPT_CODE 와 DEPT_ID 값이 서로 일치하지 않더라도,
+-----> 왼쪽 편에 있는 칼럼의 갯수에 맞게 표시를 해준 것이다.(NULL 값이라도 넣어 수를 맞춘 것이다.)
+
+
+-- 2) RIGHT OUTER JOIN
+---> 합치기에 사용한 두 테이블 중, 오른쪽 편에 작성된 테이블의 칼럼 수를 기준으로 JOIN 한다.
+
+-- ANSI 표준
+SELECT EMP_NAME, DEPT_TITLE
+FROM EMPLOYEE 
+RIGHT JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID);
+----> JOIN 구문을 기준으로, 오른쪽 편에 작성된 테이블의 모든 행이
+-----> 최종 결과(RESULT SET) 에 포함되도록 하는 JOIN 이다.
+
+-- ORACLE 표준
+SELECT EMP_NAME, DEPT_TITLE
+FROM EMPLOYEE, DEPARTMENT 
+WHERE DEPT_CODE(+) = DEPT_ID;
+----> DEPT_CODE 와 DEPT_ID 값이 서로 일치하지 않더라도,
+-----> 오른쪽 편에 있는 칼럼의 갯수에 맞게 표시를 해준 것이다.(NULL 값이라도 넣어 수를 맞춘 것이다.)
+
+
+-- 3) FULL OUTER JOIN
+---> 합치기에 사용한 두 테이블이 가진 모든 행을 결과에 포함시킨다.
+----> ORACLE 에서는 FULL OUTER JOIN 구문을 사용할 수 없다.
+
+-- ANSI 표준
+SELECT EMP_NAME, DEPT_TITLE
+FROM EMPLOYEE 
+FULL JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID);
+----> JOIN 구문을 기준으로, 양쪽 편에 작성된 테이블의 모든 행이
+-----> 최종 결과(RESULT SET) 에 포함되도록 하는 JOIN 이다.
+/*
+이건 사용 가능하다.
+*/
+
+-- ORACLE 표준
+SELECT EMP_NAME, DEPT_TITLE
+FROM EMPLOYEE, DEPARTMENT 
+WHERE DEPT_CODE(+) = DEPT_ID(+);
+----> DEPT_CODE 와 DEPT_ID 값이 서로 일치하지 않더라도,
+-----> 양쪽 편에 있는 칼럼의 갯수에 맞게 표시를 해준 것이다.(NULL 값이라도 넣어 수를 맞춘 것이다.)
+/*
+ORA-01468: a predicate may reference only one outer-joined table
+01468. 00000 -  "a predicate may reference only one outer-joined table"
+*/
