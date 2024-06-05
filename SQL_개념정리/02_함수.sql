@@ -128,6 +128,22 @@ SELECT CEIL (AVG (SALARY)) FROM EMPLOYEE;
 SELECT FLOOR (AVG (SALARY)) FROM EMPLOYEE;
 SELECT ROUND (AVG (SALARY)) FROM EMPLOYEE;
 
+-- 버림(TRUNC) 
+SELECT TRUNC(AVG(SALARY)) FROM EMPLOYEE;
+
+-- FLOOR 와 TRUNC 의 차이
+--- 1) FLOOR: 주어진 숫자보다 작은 정수 중, 가장 큰 정수를 반환한다.
+----          소수 부분은 무조건 버린다.
+SELECT FLOOR(5.7) FROM DUAL; -- 5
+SELECT FLOOR(-5.7) FROM DUAL; -- -6
+SELECT FLOOR(5.789, 1) FROM DUAL; -- FLOOR 는 소수 부분은 표현하지 못하기 때문에 문제가 발생한다.
+
+--- 2) TRUNC: 주어진 숫자의 소수점을 잘라내는 역할을 한다.
+----          자르고자 하는 자릿수를 지정할 수 있고, 따로 지정하지 않으면 자릿수의 기본값은 0 이다.
+SELECT TRUNC(5.7) FROM DUAL; -- 5
+SELECT TRUNC(-5.7) FROM DUAL; -- -5
+SELECT TRUNC(5.789, 1) FROM DUAL; -- 5.7
+
 /***** TRIM(공백) *****/
 /*
 공백 관련 함수
