@@ -270,3 +270,35 @@ CREATE TABLE 자식테이블명
 칼럼명4 자료형 CONSTRAINT 인덱스에저장될이름 REFERENCES 부모테이블명(부모칼럼명1)) ON DELETE CASCADE
 
 ------------------------------------------------------------------------------------------- */
+
+-- 5. CHECK 제약 조건 ◀ 칼럼에 기록되는 값에 조건을 설정할 수 있다.
+--- CHECK (칼럼명 비교연산자 비교값);
+-- 비교 값에는 변하는 값이나 함수를 사용할 수 없다.
+
+CREATE TABLE USER_CHECK 
+(USER_NO NUMBER PRIMARY KEY,
+USER_ID VARCHAR2(20) UNIQUE,
+USER_PW VARCHAR2(30) NOT NULL,
+USER_NAME VARCHAR2(30),
+GENDER VARCHAR2(10) CHECK (GENDER IN ('남', '여')));
+-- GENDER 칼럼에는 남 또는 여 라는 글자만 들어갈 수 있게 조건을 설정한 것이다.
+
+INSERT INTO USER_CHECK VALUES (1, '유저01', '비번01', '신짱구', '남');
+
+INSERT INTO USER_CHECK VALUES (2, '유저02', '비번02', '김철수', '남자');
+/*
+ORA-02290: check constraint (KH_T.SYS_C007304) violated
+CHECK 제약 조건으로 남 또는 여 라는 글자만 들어갈 수 있게 조건을 설정해 놨는데,
+남자 라는 글자가 들어와서 오류가 발생한 것이다.
+*/
+
+-- CHECK 사용 방법
+--- 방법 1번: INDEX 에 따로 기록하지 않고, 조건 설정만 할 경우
+---- 칼럼명 자료형(크기) CHECK(칼럼명 IN ('조건1', '조건2'));
+
+--- 방법 2번: INDEX 에 기록하고, 조건 설정 할 경우(한 줄 작성)
+---- 칼럼명 자료형(크기) CONSTRAINT 인데스에기록할이름 CHECK(칼럼명 IN ('조건1', '조건2'));
+
+--- 방법 2-1번: INDEX 에 기록하고, 조건 설정 할 경우(여러 줄 작성)
+---- 칼럼명 자료형(크기), 
+----- CONSTRAINT 인데스에기록할이름 CHECK(칼럼명 IN ('조건1', '조건2'));
